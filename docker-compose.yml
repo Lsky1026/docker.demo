@@ -1,0 +1,61 @@
+version: "3"
+services: 
+  # Nginx 1.13.7: https://hub.docker.com/_/nginx/
+  web:
+    image: nginx:1.13.7
+    restart: always
+    ports:
+      # 将主机的 9100 端口映射到容器的 80 端口
+      - "9100:80"
+    depends_on:
+      - php-fpm
+    # 创建一个数据卷，由 ./images/nginx/config => /etc/nginx/conf.d
+    volumes:
+      - "./etc/nginx/config:/etc/nginx/conf.d"
+      - "./www:/var/www/html"
+    networks:
+      - front-net
+
+  # PHP 7.1-fpm: https://hub.docker.com/_/php/
+  php-fpm:
+    image: php:7.1-fpm
+    restart: always
+    expose:
+      - "9000"
+    depends_on:
+      - redis-lsky
+    volumes: 
+      - "./www/:/var/www/html"
+    networks:
+      - front-net
+      - back-net
+
+  # redis 3.2.11 https://hub.docker.com/_/redis/
+  redis-lsky:
+    image: redis:3.2.11
+    restart: always
+    expose:
+      - "6379"
+    depends_on:
+      - mysql-lsky
+    volumes:
+      - "./etc/redis-data/:/data/"
+    networks:
+      - back-net
+
+  # mysql 5.7
+  mysql-lsky:
+    image: mysql:5.7
+    restart: always
+    expose:
+      - "3306"
+    volumes:
+      - "./etc/mysql/:/var/lib/mysql/"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    networks:
+      - back-net
+
+networks:
+  front-net:
+  back-net:
