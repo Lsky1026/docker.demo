@@ -11,6 +11,8 @@ services:
       - "10443": "443"
     depends_on:
       - php-fpm
+    links:
+      - "php-fpm"
     # 创建一个数据卷，由 ./images/nginx/config => /etc/nginx/conf.d
     volumes:
       - "./etc/nginx/config:/etc/nginx/conf.d"
@@ -27,6 +29,9 @@ services:
       - "9000"
     depends_on:
       - redis-lsky
+    links:
+      - "redis-lsky"
+      - "mysql-lsky"
     volumes: 
       - "./www/:/var/www/html"
     networks:
