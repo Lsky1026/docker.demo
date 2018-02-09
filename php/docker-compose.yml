@@ -1,0 +1,11 @@
+version: "3"
+services:
+  lsky-php:
+    image: php:7.2-fpm
+    container_name: lsky_php
+    ports:
+      - "8001:80"
+      - "8002:9000"
+    volumes:
+      - "./config:/etc/nginx/conf.d"
+      - "./www:/var/www/html"
