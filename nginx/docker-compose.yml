@@ -1,0 +1,9 @@
+version: "3"
+services:
+  lsky-nginx:
+    image: nginx:latest
+    container_name: "lsky_web"
+    ports:
+      - "8101:80"
+    volumes:
+      - "./config:/etc/nginx/conf.d"

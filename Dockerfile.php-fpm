@@ -12,8 +12,7 @@ RUN set -xe \
     && apt-get clean \
     && apt-get update \        
     && docker-php-ext-install mysqli pdo_mysql \
-    && apt-get install git \
-    && y \
+    && apt-get install git -y \
     && cd ~/home/ \
     && git clone --depth=1 git://github.com/phalcon/cphalcon.git \
     && cd cphalcon/build/php7/64bits/ \
